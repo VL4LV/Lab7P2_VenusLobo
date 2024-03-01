@@ -4,6 +4,14 @@
  */
 package lab7p2_venuslobo;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.Scanner;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author ADMIN
@@ -29,7 +37,7 @@ public class Principal extends javax.swing.JFrame {
         pop = new javax.swing.JPopupMenu();
         pop_clear = new javax.swing.JMenuItem();
         pop_refresh = new javax.swing.JMenuItem();
-        jTextField1 = new javax.swing.JTextField();
+        texto_coman = new javax.swing.JTextField();
         boton_enter = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         arbol = new javax.swing.JTree();
@@ -57,6 +65,11 @@ public class Principal extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         boton_enter.setText("Enter");
+        boton_enter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                boton_enterActionPerformed(evt);
+            }
+        });
 
         jScrollPane1.setViewportView(arbol);
 
@@ -168,7 +181,7 @@ public class Principal extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 477, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(texto_coman, javax.swing.GroupLayout.PREFERRED_SIZE, 568, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(boton_enter, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
@@ -178,7 +191,7 @@ public class Principal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(texto_coman, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(boton_enter))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -193,6 +206,37 @@ public class Principal extends javax.swing.JFrame {
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+
+    private void boton_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_enterActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel modelo = new DefaultTableModel();
+        String con = texto_coman.getText();
+
+        if (con.startsWith("./load ")) {
+            String rutaArchivo = con.substring(7);
+            JOptionPane.showMessageDialog(this, "Cargando archivo desde: " + rutaArchivo);
+            DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
+        } else if (con.equals("./clear")) {
+            JOptionPane.showMessageDialog(this, "Limpiando la tabla...");
+            //limpiar la tabla
+            DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
+            model.setRowCount(0);
+        } else if (con.equals("./refresh")) {
+            JOptionPane.showMessageDialog(this, "Refrescando la tabla...");
+        } else if (con.startsWith("./create ")) {
+            String[] parts = con.split(" ");
+            if (parts.length == 3 && parts[2].equals("-single")) {
+                String nombreArchivo = parts[1];
+                JOptionPane.showMessageDialog(this, "Creando archivo: " + nombreArchivo + " con '-single' esto al final");
+            } else {
+                JOptionPane.showMessageDialog(this, "Comando incorrecto.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Comando no reconocido.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }//GEN-LAST:event_boton_enterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -243,7 +287,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JMenu mn_file;
     private javax.swing.JMenu mn_help;
     private javax.swing.JMenu mn_window;
@@ -251,5 +294,6 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem pop_clear;
     private javax.swing.JMenuItem pop_refresh;
     private javax.swing.JTable tabla_producto;
+    private javax.swing.JTextField texto_coman;
     // End of variables declaration//GEN-END:variables
 }

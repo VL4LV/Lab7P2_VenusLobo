@@ -7,11 +7,14 @@ package lab7p2_venuslobo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -42,17 +45,28 @@ public class adminProducto {
         this.archivo = archivo;
     }
 
-    private void agregarProductoDesdeLinea(String[] partes) {
-        int id = Integer.parseInt(partes[0]);
-        String nombre = partes[1];
-        int categoria = Integer.parseInt(partes[2]);
-        double precio = Double.parseDouble(partes[3]);
-        int aisle = Integer.parseInt(partes[4]);
-        int bin = Integer.parseInt(partes[5]);
-        Producto producto = new Producto(id, nombre, categoria, precio, aisle, bin);
-        ap.add(producto);
-    }
+    public void cargarArchivoATabla(String path, DefaultTableModel model) throws FileNotFoundException {
+        File archivo = new File(path);
+        if (!archivo.exists()) {
+            
+        }
 
+        // Limpiamos la tabla antes de cargar nuevos datos
+        model.setRowCount(0);
+
+        try (Scanner scanner = new Scanner(archivo)) {
+            while (scanner.hasNextLine()) {
+                String linea = scanner.nextLine();
+                String[] partes = linea.split(",");
+                if (partes.length == 6) {
+                    model.addRow(partes); // Añadir la fila directamente al modelo
+                } else {
+                    throw new IllegalStateException("El formato del archivo es incorrecto.");
+                }
+            }
+        }
+    }
+    
     public void cargarArchi() throws IOException {
         BufferedReader b = new BufferedReader(new FileReader(archivo.getName()));
         String s; 
