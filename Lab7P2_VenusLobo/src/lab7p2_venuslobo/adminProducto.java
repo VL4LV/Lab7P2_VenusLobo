@@ -4,8 +4,10 @@
  */
 package lab7p2_venuslobo;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,36 +42,34 @@ public class adminProducto {
         this.archivo = archivo;
     }
 
-    public void cargarArchi() {
-        Scanner sc = null;
-        ap = new ArrayList();
-        if (archivo.exists()) {
-            try {
-                sc = new Scanner(archivo);
-                sc.useDelimiter("\n");
+    private void agregarProductoDesdeLinea(String[] partes) {
+        int id = Integer.parseInt(partes[0]);
+        String nombre = partes[1];
+        int categoria = Integer.parseInt(partes[2]);
+        double precio = Double.parseDouble(partes[3]);
+        int aisle = Integer.parseInt(partes[4]);
+        int bin = Integer.parseInt(partes[5]);
+        Producto producto = new Producto(id, nombre, categoria, precio, aisle, bin);
+        ap.add(producto);
+    }
 
-                while (sc.hasNext()) {
-                    ap.add(new Producto(sc.nextInt(),
-                            sc.nextLine(),
-                            sc.nextInt(),
-                            sc.nextDouble(),
-                            sc.nextInt(),
-                            sc.nextInt()));
-                }
-            } catch (Exception e) {
-            }
-            sc.close();
+    public void cargarArchi() throws IOException {
+        BufferedReader b = new BufferedReader(new FileReader(archivo.getName()));
+        String s; 
+        while((s = b.readLine()) != null){
+            String[] tokens = s.split(",");
+            ap.add(new Producto(Integer.parseInt(tokens[0]), tokens[1],Integer.parseInt(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5])));
         }
     }
 
-    public void escribirArchi() throws IOException{
-        FileWriter fw = null; 
-        BufferedWriter bw = null; 
-        
+    public void escribirArchi() throws IOException {
+        FileWriter fw = null;
+        BufferedWriter bw = null;
+
         try {
-           fw = new FileWriter(archivo,false);
-           bw = new BufferedWriter(fw);
-           
+            fw = new FileWriter(archivo, false);
+            bw = new BufferedWriter(fw);
+
             for (Producto p : ap) {
                 bw.write(p.getId() + ",");
                 bw.write(p.getName() + ",");
@@ -78,10 +78,10 @@ public class adminProducto {
                 bw.write(p.getAisle() + ",");
                 bw.write(p.getBin() + "\n");
             }
-            bw.flush();        
+            bw.flush();
         } catch (Exception e) {
-        } 
+        }
         bw.close();
-        fw.close();        
+        fw.close();
     }
 }
