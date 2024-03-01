@@ -114,15 +114,7 @@ public class Principal extends javax.swing.JFrame {
             new String [] {
                 "id", "name", "category", "price", "aisle", "bin"
             }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Integer.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
+        ));
         jScrollPane2.setViewportView(tabla_producto);
 
         mn_file.setText("File");
@@ -210,13 +202,23 @@ public class Principal extends javax.swing.JFrame {
 
     private void boton_enterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_boton_enterActionPerformed
         // TODO add your handling code here:
-        DefaultTableModel modelo = new DefaultTableModel();
         String con = texto_coman.getText();
 
         if (con.startsWith("./load ")) {
             String rutaArchivo = con.substring(7);
             JOptionPane.showMessageDialog(this, "Cargando archivo desde: " + rutaArchivo);
-            DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
+
+            DefaultTableModel model = (DefaultTableModel)tabla_producto.getModel();
+            
+            adminProducto admin = new adminProducto(rutaArchivo);
+            try {
+                model=admin.cargarArchivoATabla(model); 
+                tabla_producto.setModel(model);
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (IllegalStateException e) {
+                JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         } else if (con.equals("./clear")) {
             JOptionPane.showMessageDialog(this, "Limpiando la tabla...");
             //limpiar la tabla
@@ -235,7 +237,6 @@ public class Principal extends javax.swing.JFrame {
         } else {
             JOptionPane.showMessageDialog(this, "Comando no reconocido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
-
     }//GEN-LAST:event_boton_enterActionPerformed
 
     /**

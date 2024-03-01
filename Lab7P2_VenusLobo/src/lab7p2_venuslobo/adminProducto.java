@@ -45,13 +45,11 @@ public class adminProducto {
         this.archivo = archivo;
     }
 
-    public void cargarArchivoATabla(String path, DefaultTableModel model) throws FileNotFoundException {
-        File archivo = new File(path);
+    public DefaultTableModel cargarArchivoATabla(DefaultTableModel model) throws FileNotFoundException {
         if (!archivo.exists()) {
-            
+            throw new FileNotFoundException("El archivo no existe.");
         }
 
-        // Limpiamos la tabla antes de cargar nuevos datos
         model.setRowCount(0);
 
         try (Scanner scanner = new Scanner(archivo)) {
@@ -59,20 +57,22 @@ public class adminProducto {
                 String linea = scanner.nextLine();
                 String[] partes = linea.split(",");
                 if (partes.length == 6) {
-                    model.addRow(partes); // Añadir la fila directamente al modelo
+                    model.addRow(partes); 
                 } else {
                     throw new IllegalStateException("El formato del archivo es incorrecto.");
                 }
             }
         }
+        return model;
+        
     }
-    
+
     public void cargarArchi() throws IOException {
         BufferedReader b = new BufferedReader(new FileReader(archivo.getName()));
-        String s; 
-        while((s = b.readLine()) != null){
+        String s;
+        while ((s = b.readLine()) != null) {
             String[] tokens = s.split(",");
-            ap.add(new Producto(Integer.parseInt(tokens[0]), tokens[1],Integer.parseInt(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5])));
+            ap.add(new Producto(Integer.parseInt(tokens[0]), tokens[1], Integer.parseInt(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5])));
         }
     }
 
