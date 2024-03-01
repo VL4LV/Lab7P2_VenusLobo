@@ -36,13 +36,17 @@ public class Principal extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla_producto = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
+        mn_file = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
+        jMenuItem7 = new javax.swing.JMenuItem();
+        mn_window = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
+        mn_help = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
 
         pop_clear.setText("Clear");
         pop.add(pop_clear);
@@ -61,18 +65,64 @@ public class Principal extends javax.swing.JFrame {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
                 {null, null, null, null, null, null}
             },
             new String [] {
                 "id", "name", "category", "price", "aisle", "bin"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(tabla_producto);
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        mn_file.setText("File");
 
-        jMenu2.setText("Window");
+        jMenuItem6.setText("New File");
+        mn_file.add(jMenuItem6);
+
+        jMenuItem7.setText("Import File");
+        mn_file.add(jMenuItem7);
+
+        jMenuBar1.add(mn_file);
+
+        mn_window.setText("Window");
 
         jMenu4.setText("Clear");
 
@@ -87,15 +137,22 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem4.setText("Clear Table");
         jMenu4.add(jMenuItem4);
 
-        jMenu2.add(jMenu4);
+        mn_window.add(jMenu4);
 
         jMenuItem2.setText("Refresh Tree");
-        jMenu2.add(jMenuItem2);
+        mn_window.add(jMenuItem2);
 
-        jMenuBar1.add(jMenu2);
+        jMenuBar1.add(mn_window);
 
-        jMenu3.setText("Help");
-        jMenuBar1.add(jMenu3);
+        mn_help.setText("Help");
+
+        jMenuItem1.setText("Product Structure");
+        mn_help.add(jMenuItem1);
+
+        jMenuItem5.setText("Commands");
+        mn_help.add(jMenuItem5);
+
+        jMenuBar1.add(mn_help);
 
         setJMenuBar(jMenuBar1);
 
@@ -175,17 +232,21 @@ public class Principal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree arbol;
     private javax.swing.JButton boton_enter;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
+    private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JMenu mn_file;
+    private javax.swing.JMenu mn_help;
+    private javax.swing.JMenu mn_window;
     private javax.swing.JPopupMenu pop;
     private javax.swing.JMenuItem pop_clear;
     private javax.swing.JMenuItem pop_refresh;
