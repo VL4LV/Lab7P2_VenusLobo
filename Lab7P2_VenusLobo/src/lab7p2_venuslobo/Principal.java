@@ -11,6 +11,8 @@ import java.io.FileReader;
 import java.util.Scanner;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
 
 /**
  *
@@ -35,12 +37,12 @@ public class Principal extends javax.swing.JFrame {
     private void initComponents() {
 
         pop = new javax.swing.JPopupMenu();
-        pop_clear = new javax.swing.JMenuItem();
-        pop_refresh = new javax.swing.JMenuItem();
+        load = new javax.swing.JMenuItem();
+        refresh = new javax.swing.JMenuItem();
         texto_coman = new javax.swing.JTextField();
         boton_enter = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        arbol = new javax.swing.JTree();
+        treeee = new javax.swing.JTree();
         jScrollPane2 = new javax.swing.JScrollPane();
         tabla_producto = new javax.swing.JTable();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -56,11 +58,21 @@ public class Principal extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenuItem5 = new javax.swing.JMenuItem();
 
-        pop_clear.setText("Clear");
-        pop.add(pop_clear);
+        load.setText("Load File");
+        load.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                loadActionPerformed(evt);
+            }
+        });
+        pop.add(load);
 
-        pop_refresh.setText("jMenuItem2");
-        pop.add(pop_refresh);
+        refresh.setText("Refresh Trees");
+        refresh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshActionPerformed(evt);
+            }
+        });
+        pop.add(refresh);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -71,7 +83,14 @@ public class Principal extends javax.swing.JFrame {
             }
         });
 
-        jScrollPane1.setViewportView(arbol);
+        javax.swing.tree.DefaultMutableTreeNode treeNode1 = new javax.swing.tree.DefaultMutableTreeNode("CSVs");
+        treeee.setModel(new javax.swing.tree.DefaultTreeModel(treeNode1));
+        treeee.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                treeeeMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(treeee);
 
         tabla_producto.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -140,11 +159,21 @@ public class Principal extends javax.swing.JFrame {
         jMenu4.add(jMenuItem3);
 
         jMenuItem4.setText("Clear Table");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem4ActionPerformed(evt);
+            }
+        });
         jMenu4.add(jMenuItem4);
 
         mn_window.add(jMenu4);
 
         jMenuItem2.setText("Refresh Tree");
+        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem2ActionPerformed(evt);
+            }
+        });
         mn_window.add(jMenuItem2);
 
         jMenuBar1.add(mn_window);
@@ -197,6 +226,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         // TODO add your handling code here:
+        texto_coman.setText("");
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
 
@@ -208,11 +238,11 @@ public class Principal extends javax.swing.JFrame {
             String rutaArchivo = con.substring(7);
             JOptionPane.showMessageDialog(this, "Cargando archivo desde: " + rutaArchivo);
 
-            DefaultTableModel model = (DefaultTableModel)tabla_producto.getModel();
-            
+            DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
+
             adminProducto admin = new adminProducto(rutaArchivo);
             try {
-                model=admin.cargarArchivoATabla(model); 
+                model = admin.cargarArchivoATabla(model);
                 tabla_producto.setModel(model);
             } catch (FileNotFoundException e) {
                 JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
@@ -238,6 +268,77 @@ public class Principal extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Comando no reconocido.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_boton_enterActionPerformed
+
+    public void refreshArbol(String directorioRaiz) {
+        DefaultMutableTreeNode nodoRaiz = (DefaultMutableTreeNode) treeee.getModel().getRoot();
+        nodoRaiz.removeAllChildren();
+        cargar(directorioRaiz, nodoRaiz);
+        ((DefaultTreeModel) treeee.getModel()).reload();
+    }
+
+    private static void cargar(String directorio, DefaultMutableTreeNode nodoPadre) {
+        File directorioActual = new File(directorio);
+
+        if (!directorioActual.isDirectory()) {
+            System.out.println("Error: " + directorio + " no es un directorio.");
+            return;
+        }
+
+        File[] archivos = directorioActual.listFiles();
+
+        if (archivos == null) {
+            System.out.println("No se pudo acceder al contenido de " + directorio);
+            return;
+        }
+
+        for (File archivo : archivos) {
+            if (archivo.isFile() && archivo.getName().endsWith(".txt")) {
+                DefaultMutableTreeNode nodoArchivo = new DefaultMutableTreeNode(archivo.getName());
+                nodoPadre.add(nodoArchivo);
+            }
+        }
+    }
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        //limpiar con el boton
+        DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        // TODO add your handling code here:
+        refreshArbol("..\\Lab7P2_VenusLobo");
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadActionPerformed
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
+
+        DefaultTreeModel no = (DefaultTreeModel) treeee.getModel();
+        no.ge
+        adminProducto admin = new adminProducto(rutaArchivo);
+        try {
+            model = admin.cargarArchivoATabla(model);
+            tabla_producto.setModel(model);
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (IllegalStateException e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_loadActionPerformed
+
+    private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_refreshActionPerformed
+
+    private void treeeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeeeMouseClicked
+        // TODO add your handling code here:
+        if (evt.isMetaDown()) {
+            pop.show(treeee, evt.getX(), evt.getY());
+        }
+    }//GEN-LAST:event_treeeeMouseClicked
 
     /**
      * @param args the command line arguments
@@ -274,8 +375,8 @@ public class Principal extends javax.swing.JFrame {
         });
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTree arbol;
     private javax.swing.JButton boton_enter;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
@@ -288,13 +389,14 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMenuItem7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenuItem load;
     private javax.swing.JMenu mn_file;
     private javax.swing.JMenu mn_help;
     private javax.swing.JMenu mn_window;
     private javax.swing.JPopupMenu pop;
-    private javax.swing.JMenuItem pop_clear;
-    private javax.swing.JMenuItem pop_refresh;
+    private javax.swing.JMenuItem refresh;
     private javax.swing.JTable tabla_producto;
     private javax.swing.JTextField texto_coman;
+    private javax.swing.JTree treeee;
     // End of variables declaration//GEN-END:variables
 }

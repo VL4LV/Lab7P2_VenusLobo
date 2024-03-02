@@ -72,7 +72,12 @@ public class adminProducto {
         String s;
         while ((s = b.readLine()) != null) {
             String[] tokens = s.split(",");
-            ap.add(new Producto(Integer.parseInt(tokens[0]), tokens[1], Integer.parseInt(tokens[2]), Double.parseDouble(tokens[3]), Integer.parseInt(tokens[4]), Integer.parseInt(tokens[5])));
+            ap.add(new Producto(Integer.parseInt(tokens[0]), 
+                    tokens[1], 
+                    Integer.parseInt(tokens[2]), 
+                    Double.parseDouble(tokens[3]),
+                    Integer.parseInt(tokens[4]),
+                    Integer.parseInt(tokens[5])));
         }
     }
 
