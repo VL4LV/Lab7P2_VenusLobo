@@ -316,8 +316,7 @@ public class Principal extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
 
         DefaultTreeModel no = (DefaultTreeModel) treeee.getModel();
-        no.ge
-        adminProducto admin = new adminProducto(rutaArchivo);
+        no.ge adminProducto admin = new adminProducto(rutaArchivo);
         try {
             model = admin.cargarArchivoATabla(model);
             tabla_producto.setModel(model);
@@ -330,7 +329,7 @@ public class Principal extends javax.swing.JFrame {
 
     private void refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshActionPerformed
         // TODO add your handling code here:
-
+        refreshArbol("..\\Lab7P2_VenusLobo");
     }//GEN-LAST:event_refreshActionPerformed
 
     private void treeeeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_treeeeMouseClicked
