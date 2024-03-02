@@ -314,9 +314,9 @@ public class Principal extends javax.swing.JFrame {
     private void loadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_loadActionPerformed
         // TODO add your handling code here:
         DefaultTableModel model = (DefaultTableModel) tabla_producto.getModel();
-
-        DefaultTreeModel no = (DefaultTreeModel) treeee.getModel();
-        no.ge adminProducto admin = new adminProducto(rutaArchivo);
+        String archiv = treeee.getLastSelectedPathComponent().toString();
+        adminProducto admin = new adminProducto(archiv);
+        
         try {
             model = admin.cargarArchivoATabla(model);
             tabla_producto.setModel(model);
